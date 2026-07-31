@@ -87,17 +87,15 @@ app.command("/kittybot-catpic", async ({ ack, respond }) => {
       ]
     });
 
-    console.log('Success! Cat block payload sent to Slack channel.');
+    console.log('Sent cat block payload to Slack channel.');
 
   } catch (error) {
-    // Enhanced error tracing logs to see exactly where a failure occurs
     if (error.response) {
       console.error(`API Error: Status ${error.response.status} - Data:`, error.response.data);
     } else {
       console.error('Network/Code Error:', error.message);
     }
     
-    // Send a private error visibility message to only the user who typed the slash command
     await respond({ 
       text: "Sorry, I couldn't fetch a cat picture right now.", 
       response_type: "ephemeral" 
