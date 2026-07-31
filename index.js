@@ -21,11 +21,12 @@ app.command("/kittybot-help", async ({ ack, respond }) => {
   await respond({
     text:
 `Available Commands:
-/kittybot-ping - Check bot latency
-/kittybot-catfact - Get a cat fact
+/kittybot-ping - Check bot latency.
+/kittybot-catfact - Get a cat fact.
 /kittybot-help - Get a list of all commands.
 /kittybot-joke - Get a joke!
 /kittybot-catpic - Get a cute cat picture.
+/kittybot-randombreed - Get a random cat breed.
 `
   });
 });
@@ -90,20 +91,70 @@ app.command("/kittybot-catpic", async ({ ack, respond }) => {
     console.log('Success! Cat block payload sent to Slack channel.');
 
   } catch (error) {
-    // Enhanced error tracing logs to see exactly where a failure occurs
     if (error.response) {
       console.error(`API Error: Status ${error.response.status} - Data:`, error.response.data);
     } else {
       console.error('Network/Code Error:', error.message);
     }
     
-    // Send a private error visibility message to only the user who typed the slash command
     await respond({ 
       text: "Sorry, I couldn't fetch a cat picture right now.", 
       response_type: "ephemeral" 
     });
   }
 });
+
+app.command("/kittybot-randombreed", async ({ ack, respond }) => {
+  await ack();
+
+  try {
+    const breedsResponse = await axios.get('https://api.thecatapi.com/v1/breeds');
+    const breedsList = breedsResponse;
+
+    const randomBreed = breedsList[Math.floor(Math.random() * breedsList.length)];
+    
+    const imageResponse = await axios.get(`https://api.thecatapi.com/v1/images/search?breed_id=${randomBreed.id}`);
+    const catImageUrl = imageResponse.data.url;
+
+    await respond({
+      response_type: "in_channel",
+      text: `🐱 Random Breed: ${randomBreed.name}!`,
+      blocks: [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `🐱 *Random Breed:* ${randomBreed.name}\n\n${randomBreed.description}`
+          }
+        },
+        {
+          type: "image",
+          image_url: catImageUrl,
+          alt_text: `A cute ${randomBreed.name} cat`,
+          title: {
+            type: "plain_text",
+            text: `${randomBreed.name}`
+          }
+        }
+      ]
+    });
+
+    console.log(`Success! Sent random breed: ${randomBreed.name}`);
+
+  } catch (error) {
+    if (error.response) {
+      console.error(`API Error: Status ${error.response.status} - Data:`, error.response.data);
+    } else {
+      console.error('Network/Code Error:', error.message);
+    }
+    
+    await respond({ 
+      text: "Sorry, I couldn't fetch a cat breed right now.", 
+      response_type: "ephemeral" 
+    });
+  }
+});
+
 
 (async () => {
   await app.start();
