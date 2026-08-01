@@ -13,21 +13,54 @@ app.command("/kittybot-ping", async ({ command, ack, respond }) => {
   const start = Date.now();
   await ack();
   const latency = Date.now() - start;
-  await respond({ text: `Pong!\nLatency: ${latency}ms` });
+  await respond({ 
+    blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*Pong! Ping successful.*\nLatency: ${latency}ms` }
+      }
+    ]
+  });
 });
 
 app.command("/kittybot-help", async ({ ack, respond }) => {
   await ack();
   await respond({
-    text:
-`Available Commands:
-/kittybot-ping - Check bot latency.
-/kittybot-catfact - Get a cat fact.
-/kittybot-help - Get a list of all commands.
-/kittybot-joke - Get a joke!
-/kittybot-catpic - Get a cute cat picture.
-/kittybot-randombreed - Get a random cat breed.
-`
+    blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "*KittyBot currently has 6 commands:*\nIf you need help contact <@U0B7FD0NAQM>."
+        }
+      },
+      {
+        type: "divider",
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "*Utility Commands:*\n\`/kittybot-help\` - Get a list of all commands.\n\`/kittybot-ping\` - Check bot latency."
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "*Basic Commands:*\n\`/kittybot-joke\` - Get a joke!"
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "*Cat Commands:*\n\`/kittybot-catfact\` - Get a cat fact.\n\`/kittybot-catpic\` - Get a cute cat picture.\n\`/kittybot-randombreed\` - Get a random cat breed."
+        }
+      }
+    ]
   });
 });
 
@@ -36,7 +69,17 @@ app.command("/kittybot-catfact", async ({ ack, respond }) => {
 
   try {
     const response = await axios.get("https://catfact.ninja/fact");
-    await respond({ text: `Cat Fact:\n${response.data.fact}` });
+    await respond({ 
+      blocks: [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `*Cat Fact:*\n${response.data.fact}`
+          }
+        }
+      ]
+    });
   } catch (err) {
     await respond({ text: "Failed to fetch a cat fact." });
   }
@@ -48,10 +91,15 @@ app.command("/kittybot-joke", async ({ ack, respond }) => {
   try {
     const response = await axios.get("https://official-joke-api.appspot.com/random_joke");
     await respond({
-      text:
-`${response.data.setup}
-
-${response.data.punchline}`
+      blocks: [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `${response.data.setup}\n\n${response.data.punchline}`
+          }
+        }
+      ]
     });
   } catch (err) {
     await respond({ text: "Failed to fetch a joke." });
@@ -108,23 +156,22 @@ app.command("/kittybot-randombreed", async ({ ack, respond }) => {
   await ack();
 
   try {
-    const breedsResponse = await axios.get('https://api.thecatapi.com/v1/breeds');
-    const breedsList = breedsResponse;
+    const catBreeds = await axios.get('https://api.thecatapi.com/v1/breeds');
+    const randomIndex = Math.floor(Math.random() * catBreeds.data.length);
+    const randomBreed = catBreeds.data[randomIndex];
 
-    const randomBreed = breedsList[Math.floor(Math.random() * breedsList.length)];
-    
-    const imageResponse = await axios.get(`https://api.thecatapi.com/v1/images/search?breed_id=${randomBreed.id}`);
-    const catImageUrl = imageResponse.data.url;
+    const catImageResponse = await axios.get(`https://api.thecatapi.com/v1/images/search?breed_ids=${randomBreed.id}`);
+    const catImageUrl = catImageResponse.data[0].url;
 
     await respond({
       response_type: "in_channel",
-      text: `🐱 Random Breed: ${randomBreed.name}!`,
+      text: `Random Breed: ${randomBreed.name}!`,
       blocks: [
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `🐱 *Random Breed:* ${randomBreed.name}\n\n${randomBreed.description}`
+            text: `*Random Breed:* ${randomBreed.name}\n\n${randomBreed.description || "No description available for this breed."}`
           }
         },
         {
