@@ -1,12 +1,19 @@
 # slack-bot
 Simple Slackbot from Stardance
 
-## Available Commands (v.1)
-/kittybot-ping - Check bot latency.   
-/kittybot-catfact - Get a cat fact.   
+## Available Commands (v1.1.0)  
+can also be found using /kittybot-help.   
+*Utility Commands*   
+/kittybot-ping - Check bot latency.  
 /kittybot-help - Get a list of all commands.    
-/kittybot-joke - Get a joke!   
+
+*Basic Commands*
+/kittybot-joke - Get a joke!  
+
+*Cat Commands*
+/kittybot-catfact - Get a cat fact.   
 /kittybot-catpic - Get a cute cat picture.   
+/kittybot-randombreed - Get a random cat breed.    
 
 ## Work Credit
 - Guide created commands
