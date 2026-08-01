@@ -1,4 +1,4 @@
-# slack-bot
+# slack-bot AKA KittyBot!
 Simple Slackbot from Stardance
 
 ## Available Commands (v1.1.0)  
@@ -13,7 +13,7 @@ can also be found using /kittybot-help.
 *Cat Commands*
 /kittybot-catfact - Get a cat fact.   
 /kittybot-catpic - Get a cute cat picture.   
-/kittybot-randombreed - Get a random cat breed.    
+/kittybot-randombreed - Get a random cat breed's photo and description.    
 
 ## Work Credit
 - Guide created commands
