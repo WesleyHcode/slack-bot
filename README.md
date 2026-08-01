@@ -1,6 +1,9 @@
 # slack-bot AKA KittyBot!
 Simple Slackbot from Stardance
 
+## How to Use:
+Currently available in Hack Club on Slack's #bot-channel-test. Type in any of the available commands!   
+
 ## Available Commands (v1.1.0)  
 can also be found using /kittybot-help.   
 *Utility Commands*   
