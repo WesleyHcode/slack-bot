@@ -9,6 +9,16 @@ const app = new App({
   socketMode: true
 });
 
+app.receiver.client.on('unable_to_establish_connection', (error) => {
+  console.error('Slack connection permanently lost! Crashing process for PM2...');
+  process.exit(1); 
+});
+
+app.receiver.client.on('disconnect', () => {
+  console.warn('Disconnected from Slack. Crashing process for PM2...');
+  process.exit(1);
+});
+
 app.command("/kittybot-ping", async ({ command, ack, respond }) => {
   const start = Date.now();
   await ack();
@@ -57,7 +67,7 @@ app.command("/kittybot-help", async ({ ack, respond }) => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "*Cat Commands:*\n\`/kittybot-catfact\` - Get a cat fact.\n\`/kittybot-catpic\` - Get a cute cat picture.\n\`/kittybot-randombreed\` - Get a random cat breed."
+          text: "*Cat Commands:*\n\`/kittybot-catfact\` - Get a cat fact.\n\`/kittybot-catpic\` - Get a cute cat picture.\n\`/kittybot-randombreed\` - Get a random cat breed's photo and description."
         }
       }
     ]
