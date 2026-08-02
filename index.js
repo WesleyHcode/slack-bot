@@ -10,13 +10,11 @@ const app = new App({
 });
 
 app.receiver.client.on('unable_to_establish_connection', (error) => {
-  console.error('Slack connection permanently lost! Crashing process for PM2...');
-  process.exit(1); 
+  console.error('Slack connection dropped. Bolt will handle internal retry logic...', error);
 });
 
 app.receiver.client.on('disconnect', () => {
-  console.warn('Disconnected from Slack. Crashing process for PM2...');
-  process.exit(1);
+  console.warn('Disconnected from Slack. Waiting for automated background reconnection...');
 });
 
 app.command("/kittybot-ping", async ({ command, ack, respond }) => {
