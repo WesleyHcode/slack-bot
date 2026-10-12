@@ -1,6 +1,7 @@
 # slack-bot AKA KittyBot!
 Simple Slackbot from Stardance
-
+Slack Testing Channel:
+https://hackclub.enterprise.slack.com/archives/C0BBBCER55W
 ## How to Use:
 Currently available in Hack Club on Slack's #bot-channel-test. Type in any of the available commands!   
 
