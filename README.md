@@ -1,5 +1,5 @@
 # slack-bot AKA KittyBot!
-Simple Slackbot from Stardance
+Simple Slackbot from Stardance        
 Slack Testing Channel:
 https://hackclub.enterprise.slack.com/archives/C0BBBCER55W
 ## How to Use:
