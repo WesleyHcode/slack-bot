@@ -6,9 +6,10 @@ const { App } = require("@slack/bolt");
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   appToken: process.env.SLACK_APP_TOKEN,
-  catToken: process.env.CAT_API_KEY,
   socketMode: true
 });
+
+catToken = process.env.CAT_API_KEY,
 
 app.receiver.client.on('unable_to_establish_connection', (error) => {
   console.error('Unable to establish connection with Slack, retrying.', error);
