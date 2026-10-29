@@ -6,6 +6,7 @@ const { App } = require("@slack/bolt");
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   appToken: process.env.SLACK_APP_TOKEN,
+  catToken: process.env.CAT_API_KEY,
   socketMode: true
 });
 
@@ -166,7 +167,7 @@ app.command("/kittybot-randombreed", async ({ ack, respond }) => {
   try {
     const catBreeds = await axios.get('https://api.thecatapi.com/v1/breeds', {
       headers: {
-        'X-API-Key': CAT_API_KEY
+        'X-API-Key': catToken
       }
     });
     const randomIndex = Math.floor(Math.random() * catBreeds.data.length);
@@ -174,7 +175,7 @@ app.command("/kittybot-randombreed", async ({ ack, respond }) => {
 
     const catImageResponse = await axios.get(`https://api.thecatapi.com/v1/images/search?breed_ids=${randomBreed.id}`, {
       headers: {
-        'X-API-Key': CAT_API_KEY
+        'X-API-Key': catToken
       }
     });
     const catImageUrl = catImageResponse.data[0].url;
