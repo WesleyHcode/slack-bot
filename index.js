@@ -164,11 +164,19 @@ app.command("/kittybot-randombreed", async ({ ack, respond }) => {
   await ack();
 
   try {
-    const catBreeds = await axios.get('https://api.thecatapi.com/v1/breeds');
+    const catBreeds = await axios.get('https://api.thecatapi.com/v1/breeds', {
+      headers: {
+        'X-API-Key': CAT_API_KEY
+      }
+    });
     const randomIndex = Math.floor(Math.random() * catBreeds.data.length);
     const randomBreed = catBreeds.data[randomIndex];
 
-    const catImageResponse = await axios.get(`https://api.thecatapi.com/v1/images/search?breed_ids=${randomBreed.id}`);
+    const catImageResponse = await axios.get(`https://api.thecatapi.com/v1/images/search?breed_ids=${randomBreed.id}`, {
+      headers: {
+        'X-API-Key': CAT_API_KEY
+      }
+    });
     const catImageUrl = catImageResponse.data[0].url;
 
     await respond({
