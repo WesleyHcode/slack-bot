@@ -9,7 +9,7 @@ const app = new App({
   socketMode: true
 });
 
-catToken = process.env.CAT_API_KEY,
+catToken = process.env.CAT_API_KEY
 
 app.receiver.client.on('unable_to_establish_connection', (error) => {
   console.error('Unable to establish connection with Slack, retrying.', error);
